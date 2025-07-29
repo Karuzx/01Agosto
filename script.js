@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "Caminando en línea recta no puede uno ir muy lejos."
     ];
 
-    // Contenido de los recuerdos para las estrellas (10 en total)
+    // Contenido de los recuerdos para los planetas (10 en total)
     const memories = [
         { title: "Nuestra Conexión Única", text: "Desde el primer momento, supe que nuestra conexión era especial. Un hilo invisible nos unió y desde entonces, mi mundo tiene más color." },
         { title: "Tu Risa Contagiosa", text: "Tu risa es la melodía más dulce. Cada vez que ríes, un pedacito de felicidad se esparce por mi corazón, iluminando todo a su paso." },
@@ -27,11 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
         { title: "Mi Promesa Eterna", text: "Prometo cuidarte, amarte y acompañarte en cada paso de esta vida. Nuestro 'para siempre' es mi mayor deseo y mi realidad favorita." }
     ];
 
-    // Elementos flotantes (ruta de imágenes si las tienes, o usa solo los nombres)
+    // Datos de los planetas (tamaño y color)
+    const planetData = [
+        { size: 40, colorVar: 'var(--planet-color-1)' },
+        { size: 50, colorVar: 'var(--planet-color-2)' },
+        { size: 35, colorVar: 'var(--planet-color-3)' },
+        { size: 60, colorVar: 'var(--planet-color-4)' },
+        { size: 45, colorVar: 'var(--planet-color-5)' },
+        { size: 55, colorVar: 'var(--planet-color-6)' },
+        { size: 38, colorVar: 'var(--planet-color-7)' },
+        { size: 48, colorVar: 'var(--planet-color-8)' },
+        { size: 42, colorVar: 'var(--planet-color-9)' },
+        { size: 65, colorVar: 'var(--planet-color-10)' }
+    ];
+
+    // Elementos flotantes (solo Principito)
     const floatingElementsData = [
-        { type: 'plane', src: 'img/plane.png', count: 3 }, // Asume que tienes img/plane.png
-        { type: 'fox', src: 'img/fox.png', count: 2 }, // Asume que tienes img/fox.png
-        { type: 'prince', src: 'img/prince.png', count: 1 } // Asume que tienes img/prince.png
+        { type: 'prince', src: 'img/prince.png', count: 2 } // Asume que tienes img/prince.png
     ];
 
     // --- Referencias del DOM ---
@@ -42,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorMessage = document.getElementById('error-message');
     const gardenTitle = document.querySelector('.garden-title');
     const gardenMessage = document.querySelector('.garden-message');
-    const starCluster = document.getElementById('star-cluster');
+    const starCluster = document.getElementById('star-cluster'); // Ahora será el contenedor de los planetas
     const memoryModal = document.getElementById('memory-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalText = document.getElementById('modal-text');
@@ -65,33 +77,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Lógica del Jardín de Recuerdos ---
 
     /**
-     * Renderiza el jardín de recuerdos, incluyendo la rosa, estrellas y elementos flotantes.
+     * Renderiza el jardín de recuerdos, incluyendo la rosa, planetas y elementos flotantes.
      */
     const renderGarden = () => {
-        gardenTitle.textContent = GARDEN_INITIAL_MESSAGE.split('!')[0] + '!'; // "¡Bienvenida a nuestro jardín!"
-        gardenMessage.textContent = GARDEN_INITIAL_MESSAGE.split('!')[1].trim(); // "Haz clic en cada estrella..."
+        gardenTitle.textContent = GARDEN_INITIAL_MESSAGE.split('!')[0] + '!';
+        gardenMessage.textContent = GARDEN_INITIAL_MESSAGE.split('!')[1].trim();
 
-        // Generar estrellas de recuerdos
+        const containerSize = 600; // Coincide con el width/height de .rose-container en CSS
+        const centerX = containerSize / 2;
+        const centerY = containerSize / 2;
+
+        // Generar planetas de recuerdos
         memories.forEach((memory, index) => {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            star.textContent = memory.title;
-            star.style.position = 'absolute'; // Necesario para posicionamiento dinámico
+            const planet = document.createElement('div');
+            planet.classList.add('planet');
+            planet.textContent = memory.title;
 
-            // Posicionamiento aleatorio de las estrellas alrededor de la rosa
-            // Ajustar el radio para que no se superpongan demasiado
-            const angle = (index / memories.length) * 2 * Math.PI; // Distribución circular
-            const radius = 100 + Math.random() * 50; // Radio entre 100px y 150px desde el centro
-            const centerX = starCluster.offsetWidth / 2;
-            const centerY = starCluster.offsetHeight / 2;
+            // Asignar tamaño y color del planeta
+            const pData = planetData[index % planetData.length]; // Usa los datos predefinidos
+            planet.style.width = `${pData.size}px`;
+            planet.style.height = `${pData.size}px`;
+            planet.style.backgroundColor = pData.colorVar;
 
-            star.style.left = `${centerX + radius * Math.cos(angle) - star.offsetWidth / 2}px`;
-            star.style.top = `${centerY + radius * Math.sin(angle) - star.offsetHeight / 2}px`;
-            star.style.animationDelay = `${Math.random() * 5}s`; // Retraso aleatorio para la animación flotante
+            // Calcular radio para la órbita (aumenta con el índice)
+            const orbitRadius = 150 + (index * 30); // Incremento de 30px por planeta, empezando en 150px
+            const initialAngle = (index / memories.length) * 2 * Math.PI; // Distribución inicial uniforme
 
-            star.addEventListener('click', () => showMemory(memory));
-            starCluster.appendChild(star);
+            // Posicionar el planeta en su órbita inicial
+            planet.style.left = `${centerX + orbitRadius * Math.cos(initialAngle) - (pData.size / 2)}px`;
+            planet.style.top = `${centerY + orbitRadius * Math.sin(initialAngle) - (pData.size / 2)}px`;
+
+            // Animación de órbita individual para cada planeta
+            const animationName = `orbit-planet-${index}`;
+            const animationDuration = 30 + (index * 5); // Órbitas más lentas para planetas exteriores
+            const animationKeyframes = `
+                @keyframes ${animationName} {
+                    from { transform: rotate(0deg) translateX(${orbitRadius}px) rotate(0deg); }
+                    to { transform: rotate(360deg) translateX(${orbitRadius}px) rotate(-360deg); }
+                }
+            `;
+            const styleSheet = document.styleSheets[0];
+            styleSheet.insertRule(animationKeyframes, styleSheet.cssRules.length);
+            planet.style.animation = `${animationName} ${animationDuration}s linear infinite`;
+
+            planet.addEventListener('click', () => showMemory(memory));
+            starCluster.appendChild(planet);
         });
+
 
         // Añadir citas del Principito
         const quote1Element = document.getElementById('quote-1');
@@ -107,18 +139,18 @@ document.addEventListener('DOMContentLoaded', () => {
         quote1Element.textContent = `"${PRINCE_QUOTES[randomIndex1]}"`;
         quote2Element.textContent = `"${PRINCE_QUOTES[randomIndex2]}"`;
 
-        // Generar elementos flotantes (aviones, zorros, principito)
+        // Generar elementos flotantes (solo Principito)
         floatingElementsData.forEach(data => {
             for (let i = 0; i < data.count; i++) {
                 const element = document.createElement('div');
                 element.classList.add('floating-element', data.type);
-                
+
                 const img = document.createElement('img');
                 img.src = data.src;
                 img.alt = data.type;
                 element.appendChild(img);
 
-                // Posición inicial aleatoria fuera de la vista y duración de animación aleatoria
+                // Posición inicial aleatoria y duración de animación aleatoria
                 const startX = Math.random() * window.innerWidth;
                 const startY = -50 - (Math.random() * 100); // Empieza por encima de la pantalla
                 element.style.left = `${startX}px`;
@@ -159,13 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
         modalTitle.textContent = memory.title;
         modalText.textContent = memory.text;
         memoryModal.style.display = 'flex';
-        // Puedes añadir lógica para la imagen si la implementas después
-        // if (memory.image) {
-        //     modalImage.src = memory.image;
-        //     modalImage.style.display = 'block';
-        // } else {
-        //     modalImage.style.display = 'none';
-        // }
     };
 
     // --- Lógica del Modal ---
