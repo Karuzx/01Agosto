@@ -7,19 +7,11 @@
     --dark-text: #333;
     --button-bg: #8A2BE2; /* Un morado para botones */
     --button-hover-bg: #6A1EB9;
-    --planet-color-1: #FFD700; /* Dorado */
-    --planet-color-2: #ADFF2F; /* Verde amarillento */
-    --planet-color-3: #87CEEB; /* Azul cielo */
-    --planet-color-4: #FF6347; /* Tomate */
-    --planet-color-5: #EE82EE; /* Violeta */
-    --planet-color-6: #FFA07A; /* Salmón claro */
-    --planet-color-7: #00CED1; /* Turquesa oscuro */
-    --planet-color-8: #FFDEAD; /* Blanco antiguo */
-    --planet-color-9: #DDA0DD; /* Ciruela */
-    --planet-color-10: #FFEFD5; /* Papaya whip */
     --modal-bg: rgba(0, 0, 0, 0.8);
     --modal-content-bg: #2B0A3F; /* Morado oscuro para el modal */
     --modal-border: #8A2BE2;
+    --rose-petal-color: #f75d8d; /* Un rosa ligeramente más claro para pétalos */
+    --rose-center-color: #cc0033; /* Un rojo más oscuro para el centro */
 }
 
 /* Fuentes */
@@ -141,73 +133,78 @@ body {
 
 .rose-container {
     position: relative;
-    width: 600px; /* Tamaño del sistema solar */
+    width: 600px; /* Contenedor para la rosa y futuros planetas */
     height: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 50px;
-    /* Esto es para que los planetas puedan orbitar alrededor del centro */
 }
 
-/* Estilo para la rosa central (simulada con CSS) - Mejorada */
+/* Estilo para la rosa central - ¡Ahora sí, con forma de rosa! */
 #central-rose {
-    width: 180px;
-    height: 180px;
-    background-color: var(--vibrant-red-rose);
+    width: 150px; /* Ancho base de la rosa */
+    height: 150px; /* Alto base de la rosa */
+    background-color: var(--rose-center-color); /* Color del centro de la rosa */
     border-radius: 50%;
     position: relative;
-    z-index: 10; /* Asegura que la rosa esté por encima de los planetas */
-    box-shadow: 0 0 30px var(--vibrant-red-rose),
-                0 0 60px rgba(255, 105, 180, 0.8),
-                0 0 90px rgba(255, 105, 180, 0.5),
-                inset 0 0 15px rgba(255, 255, 255, 0.5); /* Efecto de sol brillante */
-    transition: box-shadow 0.5s ease-in-out;
+    z-index: 10;
+    /* Efecto de brillo de la rosa */
+    box-shadow:
+        0 0 30px var(--vibrant-red-rose), /* Sombra principal */
+        0 0 60px rgba(255, 105, 180, 0.6), /* Sombra rosada exterior */
+        0 0 90px rgba(255, 105, 180, 0.3); /* Sombra más difusa */
     animation: pulse-rose 3s infinite alternate; /* Animación de pulsación */
 }
+
+/* Pétalos de la rosa con pseudo-elementos */
+#central-rose::before,
+#central-rose::after {
+    content: '';
+    position: absolute;
+    width: 100%; /* Del mismo tamaño que la base de la rosa */
+    height: 100%;
+    background-color: var(--rose-petal-color); /* Color de los pétalos */
+    border-radius: 50%; /* Para que cada pétalo sea ovalado */
+    top: 0;
+    left: 0;
+    transform-origin: center center;
+    z-index: -1; /* Detrás del centro para el efecto de pétalo */
+}
+
+#central-rose::before {
+    /* Primer pétalo: rotado y escalado para simular un pétalo */
+    transform: rotate(45deg) scale(0.7);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+}
+
+#central-rose::after {
+    /* Segundo pétalo: rotado en dirección opuesta */
+    transform: rotate(-45deg) scale(0.7);
+    box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Podemos añadir más pseudo-elementos o capas para más complejidad,
+   pero esto ya le da una forma de rosa básica. */
 
 @keyframes pulse-rose {
     0% { transform: scale(1); }
     100% { transform: scale(1.05); }
 }
 
-/* Estilos de los planetas (antes estrellas) */
+/* Contenedor de estrellas/planetas (vacío por ahora) */
 #star-cluster {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    /* Animación de rotación del sistema solar completo */
-    animation: rotate-system 120s linear infinite;
+    animation: rotate-system 120s linear infinite; /* La rotación general sigue */
 }
 
 @keyframes rotate-system {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
-}
-
-.planet {
-    position: absolute;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.7em;
-    text-align: center;
-    line-height: 1.2;
-    font-weight: bold;
-    color: var(--dark-text); /* Texto oscuro para contraste */
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    z-index: 5;
-    /* La animación de órbita individual se hará con JS */
-}
-
-.planet:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.5);
 }
 
 /* Estilos para las citas del Principito */
@@ -225,7 +222,7 @@ body {
     margin: 10px 0;
 }
 
-/* Elementos flotantes (solo Principito) */
+/* Contenedor de elementos flotantes (vacío por ahora) */
 .floating-elements-container {
     position: absolute;
     width: 100%;
@@ -234,20 +231,6 @@ body {
     left: 0;
     pointer-events: none; /* No bloquea clics */
     z-index: 1; /* Detrás del contenido principal */
-}
-
-.floating-element {
-    position: absolute;
-    opacity: 0.7;
-    animation: float-element 20s infinite linear;
-}
-
-.floating-element.prince img { width: 120px; } /* Ajusta el tamaño si es necesario */
-
-@keyframes float-element {
-    0% { transform: translate(0, 0); opacity: 0; }
-    5% { opacity: 0.7; }
-    100% { transform: translate(calc(100vw + 200px), calc(100vh + 200px)); opacity: 0; } /* Animación a través de la pantalla */
 }
 
 /* Modal de recuerdos */
@@ -322,17 +305,12 @@ body {
         font-size: 1.1em;
     }
     .rose-container {
-        width: 400px; /* Reduce el tamaño en pantallas pequeñas */
+        width: 400px;
         height: 400px;
     }
     #central-rose {
-        width: 140px;
-        height: 140px;
-    }
-    .planet {
-        width: 50px;
-        height: 50px;
-        font-size: 0.6em;
+        width: 120px; /* Ajusta el tamaño de la rosa */
+        height: 120px;
     }
     .quotes-container {
         font-size: 0.9em;
@@ -364,12 +342,7 @@ body {
         height: 300px;
     }
     #central-rose {
-        width: 100px;
-        height: 100px;
-    }
-    .planet {
-        width: 45px;
-        height: 45px;
-        font-size: 0.55em;
+        width: 90px;
+        height: 90px;
     }
 }
