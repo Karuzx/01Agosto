@@ -1,348 +1,144 @@
-/* Variables de color */
-:root {
-    --space-dark-blue: #0A0F1A;
-    --space-purple: #2F0B4A;
-    --vibrant-red-rose: #E91E63; /* Un rosa vibrante para la rosa */
-    --light-text: #E0E0E0;
-    --dark-text: #333;
-    --button-bg: #8A2BE2; /* Un morado para botones */
-    --button-hover-bg: #6A1EB9;
-    --modal-bg: rgba(0, 0, 0, 0.8);
-    --modal-content-bg: #2B0A3F; /* Morado oscuro para el modal */
-    --modal-border: #8A2BE2;
-    --rose-petal-color: #f75d8d; /* Un rosa ligeramente más claro para pétalos */
-    --rose-center-color: #cc0033; /* Un rojo más oscuro para el centro */
-}
-
-/* Fuentes */
 body {
-    font-family: 'Open Sans', sans-serif;
     margin: 0;
-    padding: 0;
     overflow: hidden; /* Evita barras de desplazamiento */
-    background: linear-gradient(135deg, var(--space-dark-blue) 0%, var(--space-purple) 100%);
-    color: var(--light-text);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    background-color: #0d0d1a; /* Fondo muy oscuro, casi negro con un toque azul/púrpura */
+    font-family: 'Open Sans', sans-serif; /* O alguna fuente tierna y legible */
 }
 
-/* Pantallas generales */
-.screen {
+.universe-container {
+    position: relative;
     width: 100vw;
     height: 100vh;
-    display: none; /* Oculto por defecto */
-    flex-direction: column;
+    display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Fondo de Estrellas Animadas */
+.stars-background {
     position: absolute;
-    top: 0;
-    left: 0;
-    transition: opacity 1s ease-in-out;
-    opacity: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+    overflow: hidden;
 }
 
-.screen.active {
-    display: flex;
-    opacity: 1;
-}
-
-/* Estilos de la pantalla de bienvenida */
-.welcome-content {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 40px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    max-width: 500px;
-    width: 90%;
-}
-
-.welcome-content h1 {
-    font-family: 'Dancing Script', cursive;
-    font-size: 3em;
-    color: var(--vibrant-red-rose);
-    margin-bottom: 20px;
-}
-
-.welcome-content p {
-    font-size: 1.2em;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
-
-#anniversary-date-input {
-    padding: 12px 20px;
-    border-radius: 8px;
-    border: 1px solid var(--button-bg);
-    margin-bottom: 20px;
-    font-size: 1.1em;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--light-text);
-}
-
-#anniversary-date-input::-webkit-calendar-picker-indicator {
-    filter: invert(1); /* Hace que el icono del calendario sea blanco en fondos oscuros */
-}
-
-
-#enter-button {
-    background-color: var(--button-bg);
-    color: var(--light-text);
-    border: none;
-    padding: 15px 30px;
-    border-radius: 50px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-#enter-button:hover {
-    background-color: var(--button-hover-bg);
-    transform: translateY(-2px);
-}
-
-.error-message {
-    color: #FF6347; /* Tomate */
-    margin-top: 15px;
-    font-size: 1.1em;
-    font-weight: bold;
-}
-
-/* Estilos del jardín de recuerdos */
-.garden-header {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.garden-title {
-    font-family: 'Dancing Script', cursive;
-    font-size: 4em;
-    color: var(--vibrant-red-rose);
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-    margin-bottom: 10px;
-}
-
-.garden-message {
-    font-size: 1.4em;
-    color: var(--light-text);
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.rose-container {
-    position: relative;
-    width: 600px; /* Contenedor para la rosa y futuros planetas */
-    height: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 50px;
-}
-
-/* Estilo para la rosa central - ¡Ahora sí, con forma de rosa! */
-#central-rose {
-    width: 150px; /* Ancho base de la rosa */
-    height: 150px; /* Alto base de la rosa */
-    background-color: var(--rose-center-color); /* Color del centro de la rosa */
-    border-radius: 50%;
-    position: relative;
-    z-index: 10;
-    /* Efecto de brillo de la rosa */
-    box-shadow:
-        0 0 30px var(--vibrant-red-rose), /* Sombra principal */
-        0 0 60px rgba(255, 105, 180, 0.6), /* Sombra rosada exterior */
-        0 0 90px rgba(255, 105, 180, 0.3); /* Sombra más difusa */
-    animation: pulse-rose 3s infinite alternate; /* Animación de pulsación */
-}
-
-/* Pétalos de la rosa con pseudo-elementos */
-#central-rose::before,
-#central-rose::after {
+/* Generación de estrellas (puedes ajustar la cantidad y el tamaño) */
+.stars-background::before {
     content: '';
     position: absolute;
-    width: 100%; /* Del mismo tamaño que la base de la rosa */
-    height: 100%;
-    background-color: var(--rose-petal-color); /* Color de los pétalos */
-    border-radius: 50%; /* Para que cada pétalo sea ovalado */
-    top: 0;
-    left: 0;
-    transform-origin: center center;
-    z-index: -1; /* Detrás del centro para el efecto de pétalo */
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background-image: radial-gradient(circle, #fff 1px, transparent 1px);
+    background-size: 5px 5px; /* Tamaño de cada estrella */
+    animation: twinkle 15s infinite alternate; /* Animación de titileo */
 }
 
-#central-rose::before {
-    /* Primer pétalo: rotado y escalado para simular un pétalo */
-    transform: rotate(45deg) scale(0.7);
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+@keyframes twinkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.3; }
 }
 
-#central-rose::after {
-    /* Segundo pétalo: rotado en dirección opuesta */
-    transform: rotate(-45deg) scale(0.7);
-    box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
-}
-
-/* Podemos añadir más pseudo-elementos o capas para más complejidad,
-   pero esto ya le da una forma de rosa básica. */
-
-@keyframes pulse-rose {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.05); }
-}
-
-/* Contenedor de estrellas/planetas (vacío por ahora) */
-#star-cluster {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    animation: rotate-system 120s linear infinite; /* La rotación general sigue */
-}
-
-@keyframes rotate-system {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* Estilos para las citas del Principito */
-.quotes-container {
-    margin-top: 40px;
-    text-align: center;
-    font-style: italic;
-    font-size: 1.1em;
-    color: rgba(255, 255, 255, 0.8);
-    max-width: 600px;
-    line-height: 1.5;
-}
-
-.quote {
-    margin: 10px 0;
-}
-
-/* Contenedor de elementos flotantes (vacío por ahora) */
-.floating-elements-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none; /* No bloquea clics */
-    z-index: 1; /* Detrás del contenido principal */
-}
-
-/* Modal de recuerdos */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--modal-bg);
+/* La Rosa que Respira */
+.rose-container {
+    position: relative;
+    z-index: 2; /* Para que esté por encima de las estrellas */
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.modal-content {
-    background-color: var(--modal-content-bg);
-    margin: auto;
-    padding: 30px;
-    border: 2px solid var(--modal-border);
-    border-radius: 10px;
-    width: 80%;
-    max-width: 600px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-    position: relative;
-    color: var(--light-text);
-    text-align: center;
-    font-family: 'Open Sans', sans-serif;
+.breathing-rose {
+    width: 200px; /* Ajusta el tamaño de tu rosa */
+    height: auto;
+    animation: breathe 5s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.6)); /* Sombra suave para darle más vida */
 }
 
-.modal-content h3 {
-    font-family: 'Dancing Script', cursive;
-    font-size: 2.2em;
-    color: var(--vibrant-red-rose);
-    margin-bottom: 15px;
+@keyframes breathe {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.95; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
-.modal-content p {
-    font-size: 1.1em;
-    line-height: 1.6;
-}
-
-.close-button {
-    color: var(--light-text);
+/* Estrellas Interactivas (los planetas) */
+.star {
     position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 28px;
-    font-weight: bold;
+    width: 20px; /* Tamaño de la estrella/planeta */
+    height: 20px;
+    background-color: #ffe082; /* Color amarillo suave para las estrellas */
+    border-radius: 50%;
+    box-shadow: 0 0 8px #ffd54f, 0 0 15px #ffecb3; /* Resplandor */
     cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    z-index: 3; /* Para que estén por encima de la rosa y el fondo */
+    animation: starTwinkle 3s infinite alternate; /* Titileo individual de cada estrella */
 }
 
-.close-button:hover,
-.close-button:focus {
-    color: #aaa;
-    text-decoration: none;
+/* Animación de titileo para cada estrella interactiva */
+@keyframes starTwinkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(0.95); }
 }
 
-/* Media Queries para Responsividad */
+/* Posiciona cada estrella manualmente para un efecto de "universo" */
+#asteroide-b612 { top: 15%; left: 10%; }
+#planeta-rey { top: 30%; left: 80%; }
+#planeta-vanidoso { top: 60%; left: 15%; }
+#planeta-farolero { top: 75%; left: 40%; }
+#planeta-geografo { top: 25%; left: 50%; }
+#planeta-bebedor { top: 5%; left: 70%; }
+#planeta-negocios { top: 85%; left: 75%; }
+#estrella-zafiro { top: 45%; left: 30%; background-color: #bbdefb; box-shadow: 0 0 8px #90caf9, 0 0 15px #e3f2fd; } /* Azul suave */
+#estrella-rosa-alba { top: 55%; left: 90%; background-color: #f8bbd0; box-shadow: 0 0 8px #f48fb1, 0 0 15px #fce4ec; } /* Rosa suave */
+#estrella-luciernaga { top: 10%; left: 40%; background-color: #c8e6c9; box-shadow: 0 0 8px #a5d6a7, 0 0 15px #e8f5e9; } /* Verde suave */
+
+/* Efecto al pasar el mouse/tocar (para un feedback visual) */
+.star:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px #fff, 0 0 25px #ffd54f;
+}
+
+/* Pop-up de Mensaje */
+.message-popup {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 15px 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    font-size: 1.1em;
+    text-align: center;
+    max-width: 250px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s;
+    z-index: 10; /* Siempre visible por encima de todo */
+}
+
+.message-popup.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Media Queries para ajuste en pantallas pequeñas */
 @media (max-width: 768px) {
-    .welcome-content h1 {
-        font-size: 2.2em;
+    .breathing-rose {
+        width: 150px; /* Rosa más pequeña en móviles */
     }
-    .welcome-content p {
-        font-size: 1em;
-    }
-    .garden-title {
-        font-size: 2.8em;
-    }
-    .garden-message {
-        font-size: 1.1em;
-    }
-    .rose-container {
-        width: 400px;
-        height: 400px;
-    }
-    #central-rose {
-        width: 120px; /* Ajusta el tamaño de la rosa */
-        height: 120px;
-    }
-    .quotes-container {
-        font-size: 0.9em;
-    }
-    .modal-content h3 {
-        font-size: 1.8em;
-    }
-    .modal-content p {
-        font-size: 0.9em;
-    }
-}
 
-@media (max-width: 480px) {
-    .welcome-content {
-        padding: 25px;
+    .star {
+        width: 15px;
+        height: 15px;
     }
-    #anniversary-date-input, #enter-button {
-        font-size: 1em;
-        padding: 10px 20px;
-    }
-    .garden-title {
-        font-size: 2em;
-    }
-    .garden-message {
-        font-size: 0.9em;
-    }
-    .rose-container {
-        width: 300px;
-        height: 300px;
-    }
-    #central-rose {
-        width: 90px;
-        height: 90px;
-    }
+
+    /* Ajusta posiciones de las estrellas para móviles si es necesario */
+    #asteroide-b612 { top: 10%; left: 5%; }
+    #planeta-rey { top: 25%; left: 85%; }
+    #planeta-vanidoso { top: 70%; left: 10%; }
+    /* ...y así para las demás si quieres un control más fino */
 }
