@@ -3,45 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Mi Principesa ❤️</title>
-    <link rel="stylesheet" href="estilos.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <title>Para una Persona Especial ✨</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="welcome-screen" class="screen active">
-        <div class="welcome-content">
-            <h1>Bienvenida a Nuestro Universo</h1>
-            <p>"Bienvenida a nuestro pequeño universo. Para entrar, por favor, introduce la fecha en que todo comenzó por segunda vez."</p>
-            <input type="date" id="anniversary-date-input" required>
-            <button id="enter-button">Entrar al Jardín</button>
-            <p id="error-message" class="error-message"></p>
-        </div>
-    </div>
-
-    <div id="garden-screen" class="screen">
-        <div class="garden-header">
-            <h1 class="garden-title">¡Bienvenida a nuestro jardín!</h1>
-            <p class="garden-message">Haz clic en cada estrella para descubrir un pedacito de mi corazón.</p>
-        </div>
-
+    <div class="universe-container">
+        <div class="stars-background"></div>
         <div class="rose-container">
-            <div id="central-rose" class="rose-animation"></div>
-            </div>
-
-        <div class="quotes-container">
-            <p class="quote" id="quote-1"></p>
-            <p class="quote" id="quote-2"></p>
+            <img src="your-rose-image.png" alt="Rosa que respira" class="breathing-rose">
         </div>
 
-        <div class="floating-elements-container"></div>
-    </div>
+        <div class="star" id="asteroide-b612" data-message="Eres única, como la rosa que se ama de verdad."></div>
+        <div class="star" id="planeta-rey" data-message="Tu fortaleza inspira respeto sin necesidad de alzar la voz."></div>
+        <div class="star" id="planeta-vanidoso" data-message="Nunca dejes de brillar, incluso cuando nadie mire."></div>
+        <div class="star" id="planeta-farolero" data-message="Tu constancia da luz a los días de quienes te rodean."></div>
+        <div class="star" id="planeta-geografo" data-message="Tu curiosidad te hace inmensa. Nunca dejes de explorarte."></div>
+        <div class="star" id="planeta-bebedor" data-message="Incluso en días oscuros, mereces compasión y amor."></div>
+        <div class="star" id="planeta-negocios" data-message="Recuerda que tú eres más que tus logros, eres magia viva."></div>
+        <div class="star" id="estrella-zafiro" data-message="Tu ternura es una fuerza que este mundo necesita."></div>
+        <div class="star" id="estrella-rosa-alba" data-message="Nunca dudes de tu poder para hacer florecer incluso el desierto."></div>
+        <div class="star" id="estrella-luciernaga" data-message="Aun en lo pequeño que crees ser, habitas un universo vasto."></div>
 
-    <div id="memory-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3 id="modal-title"></h3>
-            <p id="modal-text"></p>
-        </div>
+        <div id="message-popup" class="message-popup"></div>
     </div>
 
     <script src="script.js"></script>
