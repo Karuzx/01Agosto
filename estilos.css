@@ -7,7 +7,16 @@
     --dark-text: #333;
     --button-bg: #8A2BE2; /* Un morado para botones */
     --button-hover-bg: #6A1EB9;
-    --star-glow: #FFD700; /* Dorado para el brillo de estrellas */
+    --planet-color-1: #FFD700; /* Dorado */
+    --planet-color-2: #ADFF2F; /* Verde amarillento */
+    --planet-color-3: #87CEEB; /* Azul cielo */
+    --planet-color-4: #FF6347; /* Tomate */
+    --planet-color-5: #EE82EE; /* Violeta */
+    --planet-color-6: #FFA07A; /* Salmón claro */
+    --planet-color-7: #00CED1; /* Turquesa oscuro */
+    --planet-color-8: #FFDEAD; /* Blanco antiguo */
+    --planet-color-9: #DDA0DD; /* Ciruela */
+    --planet-color-10: #FFEFD5; /* Papaya whip */
     --modal-bg: rgba(0, 0, 0, 0.8);
     --modal-content-bg: #2B0A3F; /* Morado oscuro para el modal */
     --modal-border: #8A2BE2;
@@ -132,53 +141,54 @@ body {
 
 .rose-container {
     position: relative;
-    width: 300px; /* Tamaño de la zona interactiva de la rosa */
-    height: 300px;
+    width: 600px; /* Tamaño del sistema solar */
+    height: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 50px;
+    /* Esto es para que los planetas puedan orbitar alrededor del centro */
 }
 
-/* Estilo para la rosa central (simulada con CSS) */
+/* Estilo para la rosa central (simulada con CSS) - Mejorada */
 #central-rose {
-    width: 150px;
-    height: 150px;
+    width: 180px;
+    height: 180px;
     background-color: var(--vibrant-red-rose);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    border-radius: 50%;
     position: relative;
-    box-shadow: 0 0 20px var(--vibrant-red-rose); /* Brillo inicial */
+    z-index: 10; /* Asegura que la rosa esté por encima de los planetas */
+    box-shadow: 0 0 30px var(--vibrant-red-rose),
+                0 0 60px rgba(255, 105, 180, 0.8),
+                0 0 90px rgba(255, 105, 180, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.5); /* Efecto de sol brillante */
     transition: box-shadow 0.5s ease-in-out;
-    cursor: default; /* No interactiva directamente, solo las estrellas */
     animation: pulse-rose 3s infinite alternate; /* Animación de pulsación */
 }
 
 @keyframes pulse-rose {
-    0% { transform: scale(1); box-shadow: 0 0 20px var(--vibrant-red-rose); }
-    100% { transform: scale(1.05); box-shadow: 0 0 30px var(--vibrant-red-rose), 0 0 40px rgba(255, 105, 180, 0.7); }
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
 }
 
-/* Animación de la rosa al ser interactuada (desde JS) */
-.rose-animation.interacted {
-    animation: none; /* Detener la animación de pulso si se desea */
-    box-shadow: 0 0 30px var(--star-glow), 0 0 50px var(--star-glow);
-}
-
-
-/* Estilos de las estrellas (mini-planetas) */
+/* Estilos de los planetas (antes estrellas) */
 #star-cluster {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
+    /* Animación de rotación del sistema solar completo */
+    animation: rotate-system 120s linear infinite;
 }
 
-.star {
+@keyframes rotate-system {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.planet {
     position: absolute;
-    width: 60px; /* Tamaño base de la estrella */
-    height: 60px;
-    background-color: var(--star-glow);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -188,41 +198,17 @@ body {
     line-height: 1.2;
     font-weight: bold;
     color: var(--dark-text); /* Texto oscuro para contraste */
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
     cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-    animation: float-star 10s infinite ease-in-out alternate;
-    z-index: 5; /* Asegura que estén sobre la rosa */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 5;
+    /* La animación de órbita individual se hará con JS */
 }
 
-.star:hover {
+.planet:hover {
     transform: scale(1.1);
-    background-color: #FFEA00; /* Dorado más brillante */
-    box-shadow: 0 0 25px var(--star-glow), 0 0 40px rgba(255, 215, 0, 0.8);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.5);
 }
-
-/* Animación flotante de las estrellas */
-@keyframes float-star {
-    0% { transform: translateY(0) translateX(0); }
-    25% { transform: translateY(-10px) translateX(5px); }
-    50% { transform: translateY(0) translateX(0); }
-    75% { transform: translateY(10px) translateX(-5px); }
-    100% { transform: translateY(0) translateX(0); }
-}
-
-/* Posiciones específicas para cada estrella (ajustar según el número y diseño) */
-/* Estas son solo de ejemplo, el script las posicionará de forma dinámica. */
-.star:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
-.star:nth-child(2) { top: 25%; right: 15%; animation-delay: 1s; }
-.star:nth-child(3) { bottom: 20%; left: 25%; animation-delay: 2s; }
-.star:nth-child(4) { bottom: 10%; right: 20%; animation-delay: 3s; }
-.star:nth-child(5) { top: 40%; left: 5%; animation-delay: 4s; }
-.star:nth-child(6) { top: 55%; right: 8%; animation-delay: 5s; }
-.star:nth-child(7) { bottom: 30%; left: 50%; animation-delay: 6s; }
-.star:nth-child(8) { top: 5%; left: 50%; animation-delay: 7s; }
-.star:nth-child(9) { top: 70%; right: 40%; animation-delay: 8s; }
-.star:nth-child(10) { bottom: 5%; left: 5%; animation-delay: 9s; }
-
 
 /* Estilos para las citas del Principito */
 .quotes-container {
@@ -239,7 +225,7 @@ body {
     margin: 10px 0;
 }
 
-/* Elementos flotantes (Aviones, zorros, Principito) */
+/* Elementos flotantes (solo Principito) */
 .floating-elements-container {
     position: absolute;
     width: 100%;
@@ -256,10 +242,7 @@ body {
     animation: float-element 20s infinite linear;
 }
 
-/* Imágenes específicas para los elementos flotantes */
-.floating-element.plane img { width: 100px; }
-.floating-element.fox img { width: 80px; }
-.floating-element.prince img { width: 120px; }
+.floating-element.prince img { width: 120px; } /* Ajusta el tamaño si es necesario */
 
 @keyframes float-element {
     0% { transform: translate(0, 0); opacity: 0; }
@@ -339,14 +322,14 @@ body {
         font-size: 1.1em;
     }
     .rose-container {
-        width: 250px;
-        height: 250px;
+        width: 400px; /* Reduce el tamaño en pantallas pequeñas */
+        height: 400px;
     }
     #central-rose {
-        width: 120px;
-        height: 120px;
+        width: 140px;
+        height: 140px;
     }
-    .star {
+    .planet {
         width: 50px;
         height: 50px;
         font-size: 0.6em;
@@ -377,14 +360,14 @@ body {
         font-size: 0.9em;
     }
     .rose-container {
-        width: 200px;
-        height: 200px;
+        width: 300px;
+        height: 300px;
     }
     #central-rose {
         width: 100px;
         height: 100px;
     }
-    .star {
+    .planet {
         width: 45px;
         height: 45px;
         font-size: 0.55em;
