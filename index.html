@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Principesa ❤️</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="welcome-screen" class="screen active">
+        <div class="welcome-content">
+            <h1>Bienvenida a Nuestro Universo</h1>
+            <p>"Bienvenida a nuestro pequeño universo. Para entrar, por favor, introduce la fecha en que todo comenzó por segunda vez."</p>
+            <input type="date" id="anniversary-date-input" required>
+            <button id="enter-button">Entrar al Jardín</button>
+            <p id="error-message" class="error-message"></p>
+        </div>
+    </div>
 
+    <div id="garden-screen" class="screen">
+        <div class="garden-header">
+            <h1 class="garden-title">¡Bienvenida a nuestro jardín!</h1>
+            <p class="garden-message">Haz clic en cada estrella para descubrir un pedacito de mi corazón.</p>
+        </div>
+
+        <div class="rose-container">
+            <div id="central-rose" class="rose-animation"></div>
+            <div id="star-cluster"></div>
+        </div>
+
+        <div class="quotes-container">
+            <p class="quote" id="quote-1"></p>
+            <p class="quote" id="quote-2"></p>
+        </div>
+
+        <div class="floating-elements-container">
+            </div>
+    </div>
+
+    <div id="memory-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-text"></p>
+            </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
